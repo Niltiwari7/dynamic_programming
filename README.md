@@ -36,3 +36,29 @@ long long int count(long long int n)
 	return f(0,n,arr);
 }
 ```
+3. minimum sum of element in array
+   ```
+   #include<bits/stdc++.h>
+using namespace std;
+
+int findMinSubarraySum(int *arr, int n) {
+    int min_sum = INT_MAX;
+    int current_sum = 0;
+
+    for (int i = 0; i < n; i++) {
+        current_sum = min(arr[i], current_sum + arr[i]);
+        min_sum = min(min_sum, current_sum);
+    }
+
+    return min_sum;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    int arr[n];
+    for (int i = 0; i < n; i++) cin >> arr[i];
+    int min_subarray_sum = findMinSubarraySum(arr, n);
+    cout << "Smallest sum continuous subarray: " << min_subarray_sum << endl;
+}
+```
