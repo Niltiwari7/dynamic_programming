@@ -36,9 +36,10 @@ long long int count(long long int n)
 	return f(0,n,arr);
 }
 ```
-3. minimum sum of element in array
-   ```
-   #include<bits/stdc++.h>
+3. the minimum sum of elements in array (kadane's algorithm
+   
+ ```
+ #include<bits/stdc++.h>
 using namespace std;
 
 int findMinSubarraySum(int *arr, int n) {
