@@ -1,7 +1,7 @@
 # dynamic_programming
 
 ## Linear DP
-1. Climing Stair
+1. Climbing Stair
 
  ```
    class Solution {
@@ -36,7 +36,7 @@ long long int count(long long int n)
 	return f(0,n,arr);
 }
 ```
-3. the minimum sum of elements in array (kadane's algorithm
+3. The minimum sum of elements in an array (kadane's algorithm
    
  ```
  #include<bits/stdc++.h>
