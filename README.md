@@ -63,3 +63,37 @@ int main() {
     cout << "Smallest sum continuous subarray: " << min_subarray_sum << endl;
 }
 ```
+#### Dp on subsequence
+```
+class Solution {
+public:
+    int solve(vector<int>& coins, int amount, int i, vector<vector<int>>& dp) {
+        if (amount == 0) {
+            return 0;
+        }
+        if (i < 0 || amount < 0) {
+            return INT_MAX - 1; // INT_MAX - 1 to avoid overflow
+        }
+        if (dp[i][amount] != -1) {
+            return dp[i][amount];
+        }
+
+        // Calculate the minimum number of coins with and without taking the current coin.
+        int take = 1 + solve(coins, amount - coins[i], i, dp);
+        int not_take = solve(coins, amount, i - 1, dp);
+
+        dp[i][amount] = min(take, not_take);
+        return dp[i][amount];
+    }
+
+    int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        vector<vector<int>> dp(n, vector<int>(amount + 1, -1));
+        int result = solve(coins, amount, n - 1, dp);
+
+        // If result is INT_MAX - 1, it means it's not possible to make up the amount.
+        return (result == INT_MAX - 1) ? -1 : result;
+    }
+};
+
+```
