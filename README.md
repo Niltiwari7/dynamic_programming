@@ -97,3 +97,130 @@ public:
 };
 
 ```
+#### Target sum
+```
+class Solution {
+public:
+    
+    // dp vector store precalculated result of <index,sum>
+    // max array size 20 and max element sum 1000 and so min element sum 1000
+    // makes sum range 0 to  1000+1000 = 2000
+    int dp[21][2001];
+    
+    // recursion from 0 to end of nums array taking +nums[i] and -nums[i] value
+    int dfs(int index, vector<int>& nums, int &S, int sum)
+    {
+        // reached to the end of array 
+        // return 1 if S==sum, otherwise return 0
+        if(index==nums.size())
+            return sum==S?1:0;
+
+        // return precalculted result
+        // to avoid negative index we add 1000 with sum
+        if(dp[index][sum+1000]!=-1) return dp[index][sum+1000];
+        
+        int count = 0;
+        
+        // call recursion for taking both +nums[i] and -nums[i] values
+        // and updated running sum as sum+nums[i] and sum-nums[i]
+        
+        count+= dfs(index+1,nums,S,sum+nums[index]);
+        count+= dfs(index+1,nums,S,sum-nums[index]);
+        
+        return dp[index][sum+1000] = count;
+    }
+    
+    int findTargetSumWays(vector<int>& nums, int S) {
+        
+        // set -1 to all dp values
+        memset(dp,-1,sizeof(dp));
+        
+        // all possible ways to reach target 
+        return dfs(0,nums,S,0);
+    }
+};
+```
+#### Coin Change II
+
+```
+class Solution {
+public:
+    int solve(int amount, vector<int>& coins, int i,vector<vector<int>>&dp) {
+        if (amount == 0)
+            return 1;
+        if (amount < 0 || i == coins.size())
+            return 0;
+        if(dp[i][amount]!=-1)return dp[i][amount];
+        // Include the current coin and recurse
+        int include = solve(amount - coins[i], coins, i,dp);
+
+        // Exclude the current coin and recurse
+        int exclude = solve(amount, coins, i + 1,dp);
+
+        return dp[i][amount]=include + exclude;
+    }
+
+    int change(int amount, vector<int>& coins) {
+        vector<vector<int>>dp(coins.size(),vector<int>(amount+1,-1));
+        return solve(amount, coins, 0,dp);
+    }
+};
+```
+
+#### unbounded knapsack
+```
+#include <bits/stdc++.h>
+int knapsackUtil(vector<int>& wt, vector<int>& val, int ind, int W, vector<vector
+<int>>& dp){
+
+    if(ind == 0){
+        return ((int)(W/wt[0])) * val[0];
+    }
+    
+    if(dp[ind][W]!=-1)
+        return dp[ind][W];
+        
+    int notTaken = 0 + knapsackUtil(wt,val,ind-1,W,dp);
+    
+    int taken = INT_MIN;
+    if(wt[ind] <= W)
+        taken = val[ind] + knapsackUtil(wt,val,ind,W-wt[ind],dp);
+        
+    return dp[ind][W] = max(notTaken,taken);
+}
+
+
+int unboundedKnapsack(int n, int W, vector<int>& val,vector<int>& wt) {
+    
+    vector<vector<int>> dp(n,vector<int>(W+1,-1));
+    return knapsackUtil(wt, val, n-1, W, dp);
+}
+```
+#### Rod Cutting
+```
+int cutRodUtil(vector<int>& price, int ind, int N, vector<vector<int>>& dp){
+
+    if(ind == 0){
+        return N*price[0];
+    }
+    
+    if(dp[ind][N]!=-1)
+        return dp[ind][N];
+        
+    int notTaken = 0 + cutRodUtil(price,ind-1,N,dp);
+    
+    int taken = INT_MIN;
+    int rodLength = ind+1;
+    if(rodLength <= N)
+        taken = price[ind] + cutRodUtil(price,ind,N-rodLength,dp);
+        
+    return dp[ind][N] = max(notTaken,taken);
+}
+
+
+int cutRod(vector<int>& price,int N) {
+
+    vector<vector<int>> dp(N,vector<int>(N+1,-1));
+    return cutRodUtil(price,N-1,N,dp);
+}
+```
