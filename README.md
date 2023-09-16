@@ -224,3 +224,4 @@ int cutRod(vector<int>& price,int N) {
     return cutRodUtil(price,N-1,N,dp);
 }
 ```
+### Dp on string
