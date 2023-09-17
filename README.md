@@ -225,3 +225,4 @@ int cutRod(vector<int>& price,int N) {
 }
 ```
 ### Dp on string
+#### Coin problem
