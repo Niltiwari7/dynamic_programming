@@ -224,5 +224,56 @@ int cutRod(vector<int>& price,int N) {
     return cutRodUtil(price,N-1,N,dp);
 }
 ```
+#### Longest subsequence-1
+```
+//{ Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+// User function Template for C++
+
+class Solution{
+public:
+    int solve(int *arr,int n,int curr,int prev)
+    {
+        if(curr==n) return 0;
+        
+        // Length of subsequence including the current element
+        int incl = 0;
+        if (prev == -1 || arr[curr] - arr[prev] == 1) {
+            incl = 1 + solve(arr, n, curr + 1, curr);
+        }
+        
+        // Length of subsequence excluding the current element
+        int excl = solve(arr, n, curr + 1, prev);
+        
+        // Return the maximum of inclusive and exclusive cases
+        return max(incl, excl);
+    }
+    
+    int longestSubsequence(int N, int arr[])
+    {
+        // code here
+       vector<int> dp(N,1);
+        int ans=INT_MIN;
+        for(int i=0;i<N;i++)
+        {
+            for(int j=0;j<i;j++)
+            {
+                if(abs(arr[i]-arr[j])==1)
+                {
+                    dp[i]=max(dp[i],dp[j]+1);
+                }
+            }
+            ans=max(ans,dp[i]);
+        }
+        return ans;
+    }
+};
+```
+
 ### Dp on string
 #### Coin problem
